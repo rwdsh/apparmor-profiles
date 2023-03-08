@@ -1,0 +1,21 @@
+# Last Modified: Sun Feb 19 11:29:27 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/foot {
+  include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/fonts>
+
+  /dev/ptmx rw,
+  /etc/shells r,
+  /usr/bin/{bash,zsh,sh} Ux,
+
+  /usr/bin/foot mr,
+  /usr/share/icons/** r,
+
+  owner @{HOME}/.cache/fontconfig/* rw,
+  owner @{HOME}/.config/foot/foot.ini r,
+
+}

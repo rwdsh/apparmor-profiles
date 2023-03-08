@@ -1,0 +1,38 @@
+# Last Modified: Sat Feb 18 11:05:36 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+
+/usr/bin/passwd {
+  include <abstractions/authentication>
+  include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/nameservice>
+  include <abstractions/wutmp>
+
+  capability audit_write,
+  capability chown,
+  capability setuid,
+  capability setgid,
+  capability sys_resource,
+
+  deny /usr/bin/nscd x,
+
+  owner /etc/.pwd.lock wk,
+  owner /etc/nshadow rw,
+  owner /etc/pwdutils/logging r,
+  owner /etc/shadow rwl,
+  owner /etc/shadow+ rw,
+  owner /etc/shadow- w,
+  owner /etc/shadow.* w,
+  owner /etc/shadow.lock wl,
+  owner /etc/shadow.old rwl,
+  owner /etc/shadow.tmp?????? rwl,
+  /usr/bin/passwd mr,
+  /usr/lib/pwdutils/lib*.so* mr,
+  /usr/lib64/pwdutils/lib*.so* mr,
+  /usr/share/cracklib/** r,
+  owner @{PROC}/@{pid}/loginuid r,
+
+}

@@ -1,0 +1,21 @@
+# Last Modified: Thu Feb 16 18:38:03 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/dnscrypt-proxy {
+  include <abstractions/base>
+  include <abstractions/nameservice>
+  include <abstractions/nis>
+  include <abstractions/ssl_certs>
+
+  /etc/dnscrypt-proxy/{,*} r,
+
+  @{PROC}/sys/net/core/somaxconn r,
+  @{sys}/kernel/mm/transparent_hugepage/hpage_pmd_size r,
+
+  /usr/bin/dnscrypt-proxy mr,
+
+  owner /var/cache/private/dnscrypt-proxy/{,*} rw,
+
+}

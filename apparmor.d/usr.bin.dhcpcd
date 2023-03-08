@@ -1,0 +1,36 @@
+# Last Modified: Sat Feb 18 11:24:47 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/dhcpcd {
+  include <abstractions/base>
+  include <abstractions/nameservice>
+  include <abstractions/consoles>
+
+  capability net_admin,
+  capability net_raw,
+  capability setgid,
+  capability setuid,
+  capability sys_chroot,
+
+  network inet raw,
+  network packet raw,
+
+  /etc/group r,
+  /etc/nsswitch.conf r,
+  /etc/passwd r,
+  /etc/dhcpcd.conf r,
+
+  /run/dhcpcd/ rw,
+  /run/dhcpcd/* rwk,
+
+  @{sys}/devices/virtual/dmi/id/product_uuid r,
+  @{PROC}/sys/net/ipv4/conf/*/promote_secondaries r,
+
+  /usr/bin/dhcpcd mr,
+  /var/lib/dhcpcd/*.lease rw,
+
+  # deny hooks as i dont use them anyway
+  deny /usr/lib/dhcpcd/dhcpcd-run-hooks x,
+}

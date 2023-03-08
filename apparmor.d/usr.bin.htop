@@ -1,0 +1,26 @@
+# Last Modified: Sun Feb 19 11:39:16 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/htop {
+  include <abstractions/base>
+  include <abstractions/bash>
+  include <abstractions/consoles>
+
+  signal send set=term peer=unconfined,
+  signal send set=kill peer=unconfined,
+  ptrace (read),
+
+  /etc/nsswitch.conf r,
+  /etc/passwd r,
+  /etc/sensors.d/{,*} r,
+  /etc/sensors3.conf r,
+
+  @{PROC}/{,**} r,
+  @{sys}/{,**} r,
+
+  /usr/bin/htop mr,
+  owner @{HOME}/.config/htop/{,htoprc} rw,
+
+}

@@ -1,0 +1,17 @@
+# Last Modified: Sun Feb 19 11:55:01 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/dig {
+  include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/nameservice>
+  include <abstractions/openssl>
+
+  /etc/resolv.conf r,
+  @{sys}/kernel/mm/transparent_hugepage/enabled r,
+  /usr/bin/dig mr,
+  owner /proc/[0-9]*/task/** rw,
+
+}

@@ -1,0 +1,41 @@
+# Last Modified: Sun Feb 19 12:23:42 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/keepassxc {
+  include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/dri-common>
+  include <abstractions/fonts>
+  include <abstractions/nameservice>
+  include <abstractions/user-tmp>
+
+  /etc/nsswitch.conf r,
+  /etc/passwd r,
+  /etc/localtime r,
+
+  @{PROC}/[0-9]*/mountinfo r,
+  @{PROC}/sys/kernel/random/boot_id r,
+  @{sys}/devices/pci0000:00/** r,
+
+  /usr/bin/ r,
+  /usr/bin/keepassxc mr,
+  /usr/share/{,**} r,
+  /dev/ r,
+
+  owner @{HOME}/ r,
+  owner @{HOME}/.cache/keepassxc/{,**} rwlk,
+  owner @{HOME}/.cache/fontconfig/{,**} rwl,
+  owner @{HOME}/.cache/mesa_shader_cache/{,**} rw,
+  owner @{HOME}/.config/ r,
+  owner @{HOME}/.config/#[0-9]* rw,
+  owner @{HOME}/.config/QtProject.conf rwl,
+  owner @{HOME}/.config/QtProject.conf.lock rwk,
+  owner @{HOME}/.config/keepassxc/{,**} rwlk,
+  # location specific to my system
+  owner @{HOME}/.priv/ r,
+  owner @{HOME}/.priv/passwords/ r,
+  owner @{HOME}/.priv/passwords/* rwlk,
+
+}

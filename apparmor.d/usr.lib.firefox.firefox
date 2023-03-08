@@ -1,0 +1,74 @@
+# vi:set syntax=apparmor:
+# Last Modified: Sun Feb 19 12:59:16 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+@{exec_name}=/usr/lib/firefox/firefox
+
+profile @{exec_name} {
+  include <abstractions/base>
+  include <abstractions/dri-common>
+  include <abstractions/gio-open>
+  include <abstractions/gnome>
+  include <abstractions/nameservice>
+  include <abstractions/ssl_certs>
+  include <abstractions/vulkan>
+
+  /usr/lib/firefox/firefox mrix,
+
+  # its safe aight
+  capability sys_admin,
+  capability sys_chroot,
+  #capability sys_ptrace,
+  #           ^^^^^^^^^^ not necessary?
+
+  ptrace (read) peer=@{exec_name},
+
+  network netlink raw,
+
+  /etc/hosts r,
+  /etc/mime.types r,
+  /etc/nsswitch.conf r,
+  /etc/resolv.conf r,
+  /sys/devices/pci0000:00/** r,
+
+  /usr/share/libdrm/{,**} r,
+  /usr/share/mime/{,**} r,
+  /usr/share/gtk-3.0/{,**} r,
+  /usr/share/fontconfig/{,**} r,
+  /usr/share/themes/{,**} r,
+  /usr/share/icu/{,**} r,
+  /usr/share/drirc.d/{,**} r,
+  /usr/share/fonts/{,**} r,
+  /usr/share/glib-2.0/{,**} r,
+  /usr/share/glvnd/{,**} r,
+  /usr/share/X11/xkb/{,**} r,
+
+  owner /dev/shm/wayland.mozilla.ipc.* rw,
+  owner @{PROC}/[0-9]*/cgroup r,
+  owner @{PROC}/[0-9]*/fd/ r,
+  owner @{PROC}/[0-9]*/uid_map rw,
+  owner @{PROC}/[0-9]*/gid_map rw,
+  owner @{PROC}/[0-9]*/setgroups w,
+  owner @{PROC}/[0-9]*/mountinfo r,
+  owner @{PROC}/[0-9]*/stat r,
+  owner @{PROC}/[0-9]*/task/{,**} r,
+
+  owner @{HOME}/.cache/{,**} rw,
+  owner @{HOME}/.mozilla/ r,
+  owner @{HOME}/.mozilla/** rwk,
+  owner @{HOME}/Downloads/ r,
+  owner @{HOME}/Downloads/** rw,
+  owner @{HOME}/.cache/fontconfig/ rw,
+  owner @{HOME}/.cache/fontconfig/** rwl,
+  #owner @{HOME}/.config/gtk-3.0/{,*} r,
+
+  deny /run/user/[0-9]*/dconf/{,**} rw,
+  deny @{sys}/{,**} rw,
+  deny /boot/{,**} r,
+  deny /efi/{,**} r,
+  deny @{PROC}/[0-9]*/oom_score_adj w,
+  deny /usr/lib/modules/{,**} r,
+
+}

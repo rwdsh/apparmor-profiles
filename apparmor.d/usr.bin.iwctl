@@ -1,0 +1,16 @@
+# Last Modified: Tue Feb 28 09:43:52 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/iwctl {
+  include <abstractions/base>
+  include <abstractions/consoles>
+
+  network netlink raw,
+
+  /etc/inputrc r,
+  /usr/bin/iwctl mr,
+  /usr/share/terminfo/{,**} r,
+
+}

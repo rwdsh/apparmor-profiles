@@ -1,0 +1,17 @@
+# Last Modified: Sun Feb 19 11:21:34 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/swaybg {
+  include <abstractions/base>
+  include <abstractions/gio-open>
+
+  /usr/bin/swaybg mr,
+  /usr/share/backgrounds/{,**} r,
+
+  owner /dev/shm/swaybg-* rw,
+  # specific to my system
+  owner @{HOME}/.priv/wallpapers/* r,
+
+}

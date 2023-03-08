@@ -1,0 +1,32 @@
+# Last Modified: Tue Feb 28 09:43:52 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/lib/iwd/iwd {
+  include <abstractions/base>
+
+  capability net_admin,
+  #capability net_raw,
+  #           ^^^^^^^ not used
+
+  network alg seqpacket,
+  network netlink dgram,
+
+  owner /dev/rfkill rw,
+  owner @{sys}/devices/pci0000:00/**/net/* r,
+  owner @{sys}/devices/pci0000:00/**/phy[0-9]/** r,
+  owner @{sys}/devices/pci0000:00/**/phy[0-9]/modalias r,
+  owner @{sys}/devices/pci0000:00/**/0000:*/modalias r,
+
+  owner /usr/lib/iwd/iwd mr,
+  owner /etc/iwd/{,*} r,
+
+  owner /var/lib/iwd/{,**} rw,
+
+  # ipv4 only
+  owner @{PROC}/sys/net/ipv4/conf/wlan[0-9]/drop_gratuitous_arp w,
+  owner @{PROC}/sys/net/ipv4/conf/wlan[0-9]/drop_unicast_in_l2_multicast w,
+  owner @{PROC}/sys/net/ipv4/conf/wlan[0-9]/arp_evict_nocarrier w,
+
+}

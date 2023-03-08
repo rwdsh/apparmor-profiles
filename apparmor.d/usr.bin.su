@@ -1,0 +1,29 @@
+# Last Modified: Sun Feb 19 11:45:33 2023
+abi <abi/3.0>,
+
+include <tunables/global>
+
+/usr/bin/su {
+  include <abstractions/base>
+  include <abstractions/consoles>
+  include <abstractions/nameservice>
+  include <abstractions/wutmp>
+
+  capability audit_write,
+  capability setgid,
+  capability setuid,
+
+  /usr/bin/* Ux,
+  /usr/bin/su mr,
+
+  owner /etc/group r,
+  owner /etc/login.defs r,
+  owner /etc/nsswitch.conf r,
+  owner /etc/passwd r,
+  owner /etc/shadow r,
+  owner /run/utmp rk,
+  /etc/pam.d/{,*} r,
+
+  @{PROC}/sys/kernel/random/boot_id r,
+
+}
